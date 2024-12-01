@@ -1,0 +1,31 @@
+en:
+  welcome: "Welcome to Calculator! Enter your name:"
+  valid_name: "Make sure to enter a valid name."
+  first_number: "Whats the first number?"
+  second_number: "Whats the second number?"
+  invalid_number: "Hmm... That doesnt look like a valid number"
+  invalid_operation: "Must choose 1,2,3 or 4"
+  operator_prompt: |
+      "What operation would you like to perform?
+        1) add
+        2) subtract
+        3) multiply
+        4) division"
+  keep_going: "Do you want to perform another calculation> (Y to calculate again)"
+  goodbye: "Thanking for using calculator. Goodbye!"
+
+es:
+  welcome: "¡Bienvenido al Calculador! Introduce tu nombre:"
+  valid_name: "Asegúrate de ingresar un nombre válido."
+  first_number: "¿Cuál es el primer número?"
+  second_number: "¿Cuál es el segundo número?"
+  invalid_number: "Hmm... Eso no parece un número válido"
+  invalid_operation: "Debes elegir 1,2,3 o 4"
+  operator_prompt: |
+    ¿Qué operación te gustaría realizar?
+      1) sumar
+      2) restar
+      3) multiplicar
+      4) dividir
+  keep_going: "¿Quieres realizar otro cálculo? (Y para calcular de nuevo)"
+  goodbye: "¡Gracias por usar el calculador! Adiós."

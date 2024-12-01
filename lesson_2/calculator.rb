@@ -1,118 +1,135 @@
-# CALCULATOR
+LANGUAGE = 'es'
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+# puts MESSAGES.inspect
+
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
 
 def prompt(message)
-    Kernel.puts(" => #{message}")
+  Kernel.puts(" => #{message}")
 end
 
 def valid_number?(number)
-    number.to_i != 0
+  Float(number) rescue false
+  # attempts to convert the input into float
+  # rescue false return false if exception occurs
 end
+
+# def integer?(input)
+#   input.to_i.to_s == input
+# end
+# THIS METHOD CONVERTS THE INPUT TO AN INTEGER IF THE INPUT CAN BE CONVERTED 
+# IT FINE BUT IF NOT IT WILL EITHER RETURN PART OF THE INPUT(ANY PART THATS INTEGER)
+# OR IT WILL RETURN 0 IF FOR EXAMPLE "ABC:"
+
+
+# def operator_message(operator)
+#   case operator
+#   when '1'
+#     'Adding'
+#   when '2'
+#     'Substracting'
+#   when '3'
+#     'Multiplying'
+#   when '4'
+#     'Dividing'
+#   end
+# end
+
+# Here if we need to add more code we have to make sure save the whole case 
+# statement to a variable and return that in the end
 
 def operator_message(operator)
-  case operator
-    when '1'
-      'Adding'
-    when '2'
-      'Substracting'
-    when '3'
-      'Multiplying'
-    when '4'
-      'Dividing'
-  end
+  {
+    '1' => 'Adding',
+    '2' => 'Subtracting',
+    '3' => 'Multiplying',
+    '4' => 'Dividing'
+  }[operator]
 end
-
-
-prompt("Welcome to calculator, Please enter your name:")
+prompt(messages('welcome', LANGUAGE))
 
 name = ''
 loop do
   name = Kernel.gets().chomp()
   if name.empty?()
-    prompt("Make sure to use a valid name")
+    prompt(messages('valid_name',LANGUAGE))
   else
     prompt("Hi #{name.capitalize()}, Nice to meet you")
     break
   end
 end
 
-loop do #main loop
+loop do
+  number1 = ''
+  loop do
+    prompt(messages("first_number",LANGUAGE))
+    number1 = Kernel.gets().chomp()
 
-
-    number1 = ''
-    loop do
-        prompt("Whats the first number?")
-        number1 = Kernel.gets().chomp.to_f
-
-        if valid_number?(number1)
-            break
-        else
-            prompt("Hmm.. that doesn't look like a valid number")
-        end
+    if valid_number?(number1)
+      number1 = number1.to_f
+        break
+    else
+      prompt(messages("invalid_number",LANGUAGE))
     end
+  end
 
-    number2 = ''
-    loop do
-        prompt("Whats the second number?")
-        number2 = Kernel.gets().chomp.to_f
+  number2 = ''
+  loop do
+    prompt(messages('second_number',LANGUAGE))
+    number2 = Kernel.gets().chomp()
 
-        if valid_number?(number2)
-            break
-        else
-            prompt("Hmm.. that doesn't look like a valid number")
-        end
+    if valid_number?(number2)
+      number2 = number2.to_f
+        break
+    else
+        prompt(messages("invalid_number",LANGUAGE))
     end
+  end
 
-    operator_prompt = <<-MSG
-      "What operation would you like to perform?
-        1) add 
-        2) subtract 
-        3) multiply 
-        4) division"
-    MSG
-
-  prompt(operator_prompt)
-
+  prompt(messages('operator_prompt',LANGUAGE))
   operation = ''
-    loop do
+  loop do
     operation = Kernel.gets().chomp()
-    
     if %w(1 2 3 4).include?(operation)
       break
     else
-      prompt("Must choose 1,2,3 or 4")
+      prompt(messages("invalid_operation",LANGUAGE))
     end
+  end
+
+  # if operation == '+'
+  #     answer = number1 + number2
+  # elsif operation == '-'
+  #     answer = number1 - number2
+  # elsif operation == '/'
+  #     answer = number1 / number2
+  # elsif operation == '*'
+  #     answer = number1 * number2
+  # else
+  #     Kernel.puts("Please chose a valid operation")
+  # end
+  prompt(operator_message(operation))
+  sleep(0.5)
+
+  result =
+    case operation
+    when '1'
+      number1 + number2
+    when '2'
+      number1 - number2
+    when '3'
+      number1 * number2
+    when '4'
+      number1 / number2
     end
 
-    # if operation == '+'
-    #     answer = number1 + number2
-    # elsif operation == '-'
-    #     answer = number1 - number2
-    # elsif operation == '/'
-    #     answer = number1 / number2
-    # elsif operation == '*'
-    #     answer = number1 * number2
-    # else
-    #     Kernel.puts("Please chose a valid operation")
-    # end
-    prompt(operator_message("#{operation}")) 
-    sleep(1)
+  prompt("the answer is #{result}") if result
+  prompt(messages('keep_going',LANGUAGE))
 
-    result = case operation
-        when '1'
-        number1 + number2
-        when '2'
-        number1 - number2
-        when '3'
-        number1 * number2
-        when '4'
-        number1 / number2
-    end
-
-    prompt("the answer is #{result}") if result
-    prompt("Do you want to perform another calculation> (Y to calculate again)")
-
-    answer = Kernel.gets().chomp()
-    break unless answer.downcase().start_with?('y')
+  answer = Kernel.gets().chomp()
+  break unless answer.downcase().start_with?('y')
 end
-    prompt("Thanking for using calculator. Goodbye!")
-
+prompt(messages('goodbye',LANGUAGE))
